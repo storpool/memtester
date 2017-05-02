@@ -43,7 +43,7 @@ struct test tests[] = {
     { "Compare AND", test_and_comparison },
     { "Sequential Increment", test_seqinc_comparison },
     { "Solid Bits", test_solidbits_comparison },
-    { "Block Sequential", test_blockseq_comparison },
+/*    { "Block Sequential", test_blockseq_comparison },
     { "Checkerboard", test_checkerboard_comparison },
     { "Bit Spread", test_bitspread_comparison },
     { "Bit Flip", test_bitflip_comparison },
@@ -53,6 +53,7 @@ struct test tests[] = {
     { "8-bit Writes", test_8bit_wide_random },
     { "16-bit Writes", test_16bit_wide_random },
 #endif
+*/
     { NULL, NULL }
 };
 
