@@ -63,6 +63,7 @@ find-systype trycpp.c
 
 extra-libs: \
 extra-libs.sh systype
+	chmod 755 extra-libs.sh
 	./extra-libs.sh "`cat systype`" >extra-libs
 
 load: \
