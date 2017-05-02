@@ -1,0 +1,7 @@
+StorPool modifications to memtester
+
+These are purely cosmetic, to remove some output we don't care about (and
+this way making it more usable as a non-interactive tool), and to remove some
+tests which do not give us useful information.
+
+-- Vasil Kolev <vk@storpool.com>
