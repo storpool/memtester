@@ -254,7 +254,7 @@ int main(int argc, char **argv) {
     }
 
     if (optind >= argc) {
-        loops = 0;
+        loops = 1;
     } else {
         errno = 0;
         loops = strtoul(argv[optind], &loopsuffix, 0);
