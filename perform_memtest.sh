@@ -1,21 +1,30 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 memchips=`dmidecode -t memory|grep "Serial Number:"|cut -d: -f 2|md5sum|awk '{print $1}'`
-
-if ! [ -d /etc/storpool ]; then
-	mkdir /etc/storpool
-fi
 
 if [ -f /etc/storpool/${memchips}.memtested ]; then
 	echo Memory already tested
 	exit 0
 fi
 
+if [ -e /usr/local/bin/memtester ]; then
+	MT=/usr/local/bin/memtester
+elif [ -e /root/storpool/memtester ]; then
+	MT=/root/storpool/memtester
+else
+	echo Memtester not found
+	exit 1
+fi
+
+if ! [ -d /etc/storpool ]; then
+	mkdir /etc/storpool
+fi
+
+
 swapoff -a
 sync
 sysctl vm.drop_caches=3
 
-cd /root/storpool
 for i in /sys/devices/system/node/node*; do
 	node=`basename $i`
 	nodenum=`echo $node|sed s/node//`
@@ -35,7 +44,7 @@ for i in /sys/devices/system/node/node*; do
 	finalcpulist=`(cd $i && ls -d cpu[0-9]* |sed s/cpu// |sort -n|tail -n ${allowedcpu})`
 #	cpu=`(cd $i && ls -d cpu*|head -n1 |sed s/cpu//)`
 	for cpu in $finalcpulist ; do
-		cgexec -g memory:/ -g cpuset:/ taskset -c $cpu numactl --membind $nodenum ./memtester ${memtotest}k 1 > /tmp/memtester.${node}.${cpu}.log &
+		cgexec -g memory:/ -g cpuset:/ taskset -c $cpu numactl --membind $nodenum ${MT} ${memtotest}k 1 > /tmp/memtester.${node}.${cpu}.log &
 		jobs=$jobs" $!"
 	done
 done
