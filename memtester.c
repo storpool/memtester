@@ -24,6 +24,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
+#include <sys/prctl.h>
+#include <signal.h>
 
 #include "types.h"
 #include "sizes.h"
@@ -137,6 +139,8 @@ int main(int argc, char **argv) {
     pagesizemask = (ptrdiff_t) ~(pagesize - 1);
     printf("pagesizemask is 0x%tx\n", pagesizemask);
     
+    prctl(PR_SET_PDEATHSIG, SIGKILL, 0, 0, 0);
+
     /* If MEMTESTER_TEST_MASK is set, we use its value as a mask of which
        tests we run.
      */
